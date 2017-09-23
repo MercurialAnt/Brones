@@ -1,6 +1,7 @@
 from __future__ import print_function
 import httplib2
 import os
+#import StringIO
 
 from apiclient import discovery
 from oauth2client import client
@@ -63,19 +64,23 @@ def main():
                               discoveryServiceUrl=discoveryUrl)
 
     spreadsheetId = '109n8RyvC8RGRf1EGDu0MFmbHi8-Y5ysaSI0cb0-nVMM'
-    rangeName = 'Roommate!A2:B'
+    rangeName = 'Roommate!A2:C'
     result = service.spreadsheets().values().get(
         spreadsheetId=spreadsheetId, range=rangeName).execute()
-    values = result.get('values', [])
+    roommateData = result.get('values', [])
 
-    if not values:
+    if not roommateData:
         print('No data found.')
     else:
-        print('Name, Major:')
-        for row in values:
+        file = open('Roommate.csv','w')
+        for row in roommateData:
             # Print columns A and E, which correspond to indices 0 and 4.
-            print('%s, %s' % (row[0], row[1]))
+            line = ','.join(row)
+            file.write(line)
+            file.write("\n")
+        file.close()
 
 
 if __name__ == '__main__':
     main()
+
