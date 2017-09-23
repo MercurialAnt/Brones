@@ -63,8 +63,8 @@ def main():
     service = discovery.build('sheets', 'v4', http=http,
                               discoveryServiceUrl=discoveryUrl)
 
-    spreadsheetId = '109n8RyvC8RGRf1EGDu0MFmbHi8-Y5ysaSI0cb0-nVMM'
-    rangeName = 'Roommate!A2:C'
+    spreadsheetId = '1H0xek4nSvX5gGRGwZ9kw6ASIMoxAG5tmRAuNMvq3bWg'
+    rangeName = 'Roommate!C2:Q'
     result = service.spreadsheets().values().get(
         spreadsheetId=spreadsheetId, range=rangeName).execute()
     roommateData = result.get('values', [])
