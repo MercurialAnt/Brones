@@ -58,6 +58,7 @@ def euclidean_distance(studA, studB):
 	for i in range(len(studA.attributes)):
 		dist += (studA.attributes[i]-studB.attributes[i])**2
 	return math.sqrt(dist)
+
 """
 def find_roomate (stud_list):
 	studentA = []
@@ -133,8 +134,7 @@ def find_roommate (stud_list):
 #	for i in range(len(Female)):
 #		FloorList[i]= FloorList+ roomate_list(Female[i])
 #			
-#	return FloorList
-	
+#	return FloorList	
 	
 def generate_data():
 	stud_list = []
@@ -152,6 +152,7 @@ def generate_data():
 		stud_list.append(student)
 	random.shuffle(stud_list)
 	return stud_list
+
 
 student_list = generate_data()
 print(student_list)
