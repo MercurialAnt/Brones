@@ -13,8 +13,8 @@ class Student:
 		self.floor = None							# a value between 1 and 6
 	
 	def __str__(self):
-		return self.name
-#		return "(" + self.name + " : " + str(self.floor) + ")"
+		# return self.name
+		return "(" + self.name + " : " + str(self.floor) + ")"
 
 	def __repr__(self):
 		return str(self)
@@ -50,7 +50,9 @@ def separate_genders(student_list):
 
 def separate_floors(stud_list):
 	sorted(stud_list)
-	part = len(stud_list)/6
+	part = math.ceil( (len(stud_list)/6.0) )
+	if part % 2:
+		part += 1
 	for x in range(len(stud_list)):
 		stud_list[x].floor = int(x//part) + 1
 
@@ -77,7 +79,7 @@ def find_roomate (stud_list):
 
 	return (studentA,studentB)
 """
-def find_roommate (stud_list):
+def get_roommate_list (stud_list):
 	size = len(stud_list)
 	Stud_Matrix = [[sys.maxsize for x in range(size)] for y in range(size)]
 	heap = []
@@ -99,26 +101,12 @@ def find_roommate (stud_list):
 			paired.add(j)
 	
 	return paired_roommates
-			
-	
-	
-	
-#def roomate_list(stud_list):
-#	my_roomate_list = []
-#	while 0 < len(stud_list):
-#		roomate = find_roomate(stud_list)
-#		print(roomate)
-#		stud_list.remove(roomate[0])
-#		stud_list.remove(roomate[1])
-#		my_roomate_list.append(roomate)
-#	
-#	return my_roomate_list
 	
 def run(stud_list):
 	male_list, female_list = separate_genders(stud_list)
 	separate_floors(male_list)
 	separate_floors(female_list)
-	print(male_list,female_list)
+	# print(male_list,female_list)
 	Male =[[] for _ in range(6)]
 	Female = [[] for _ in range(6)]
 	
@@ -126,27 +114,30 @@ def run(stud_list):
 		Male[student.floor-1].append(student)
 	for student in female_list:
 		Female[student.floor-1].append(student)
-	print("***************")
-	print(Male)
-	print(Female) 
-	print("***************")
+	# print("***************")
+	# print(Male)
+	# print(Female) 
+	# print("***************")
 	FloorList=[[] for _ in range(6)]
 	for i in range(6):
-		FloorList[i] = find_roommate(Male[i])
+		FloorList[i] = get_roommate_list(Male[i])
 	for i in range(6):
-		FloorList[i] += find_roommate(Female[i])
+		FloorList[i] += get_roommate_list(Female[i])
 			
 	return FloorList	
 	
+# This function is only for generating dummy data
 def generate_data():
 	stud_list = []
-	for x in range(0,36):
+	NUM_OF_MALES = 28
+	NUM_OF_FEMALES = 24
+	for x in range(0,NUM_OF_MALES):
 		attributes = []
 		for i in range(10):
 			attributes.append(random.randrange(10))
 		student = Student("anthony"+str(x),True,attributes)
 		stud_list.append(student)
-	for x in range(0,30):
+	for x in range(0,NUM_OF_FEMALES):
 		attributes = []
 		for i in range(10):
 			attributes.append(random.randrange(10))
@@ -157,14 +148,15 @@ def generate_data():
 
 
 student_list = generate_data()
-#print(student_list)
-#males, females = separate_genders(student_list)
-#separate_floors(males)
-#print("******************")
-#print(males)
+# print("******************")
+# print(student_list)
+# males, females = separate_genders(student_list)
+# separate_floors(males)
+# print("******************")
+# print(males)
 #
-#roommates = find_roommate(males)
-#print("******************")
+#roommates = get_roommate_list(males)
+# print("******************")
 #for roommate in roommates:
 #	print(roommate)
 #	
