@@ -54,12 +54,14 @@ def separate_floors(stud_list):
 
 def euclidean_distance(studA, studB):
 	dist=0
-	for i in range(len(0, studA.attributes)):
+	for i in range(len(studA.attributes)):
 		dist += (studA.attributes[i]-studB.attributes[i])**2
 	return math.sqrt(dist)
 	
 def find_roomate (stud_list):
-	mat = [[sys.maxsize for x in range(len(stud_list))] for y in range(len(stud_list))]
+	studentA = []
+	studentB = []
+	smallest_dist =	sys.maxsize
 	for x in range(0,len(stud_list)):
 		for y in range(x+1,len(stud_list)):
 			if not x == y:
@@ -68,68 +70,60 @@ def find_roomate (stud_list):
 					smallest_dist = dist
 					studentA = stud_list[x]
 					studentB = stud_list[y]
-	return (studentA,studentB)
-	
-# def roomate_list(stud_list):
-# 	my_roomate_list = []
-# 	counter = 0
-# 	while counter < len(stud_list):
-# 		roomate = find_roomate(stud_list)
-# 		stud_list.remove(roomate[0])
-# 		stud_list.remove(roomate[1])
-# 		my_roomate_list.append(roomate)
-# 		counter += 1
-	
-# 	return my_roomate_list
-	
-# def run(stud_list): 
-# 	male_list, female_list = separate_genders(stud_list)
-# 	#print male_list.__str__()
-# 	#print female_list.__str__()
-	
-# 	male_list = separate_floors(male_list)
-# 	female_list = separate_floors(female_list)
-# 	male_dict = {}
-# 	female_dict = {}
-# 	for male in male_list:
-# 		if male_dict.has_key(male.floor):
-# 			male_dict[male.floor].append(male)
-# 		else:
-# 			male_dict[male.floor]=[male]
-# 	for female in female_list:
-# 			if female_dict.has_key(female.floor):
-# 				female_dict[female.floor].append(female)
-# 			else:
-# 				female_dict[female.floor]=[female]		
-# 	final_dict = {}
-# 	for key, value in male_dict.items():
-# 		final_dict[key]=roomate_list(value)
+					print(studentA,studentB)
 
-# 	#for key, value in female_dict.items():
-# 		#print final_dict[key]
-# 		#final_dict[key]= final_dict[key] + roomate_list(value)
+	return (studentA,studentB)
+
+def roomate_list(stud_list):
+	my_roomate_list = []
+	while 0 < len(stud_list):
+		roomate = find_roomate(stud_list)
+		print(roomate)
+		stud_list.remove(roomate[0])
+		stud_list.remove(roomate[1])
+		my_roomate_list.append(roomate)
+	
+	return my_roomate_list
+	
+def run(stud_list):
+	male_list, female_list = separate_genders(stud_list)
+	
+	separate_floors(male_list)
+	separate_floors(female_list)
+	print(male_list ,female_list)
+	Male =[[] for _ in range(6)]
+
+	Female = [[] for _ in range(6)]
+	for student in male_list:
+		Male[student.floor-1].append(student)
+	for student in female_list:
+		Female[student.floor-1].append(student)
+	print(Male)
+	print(Female)
+	FloorList=[[]in range(6)]
+	for i in range(len(Male)):
+		FloorList[i]=roomate_list(Male[i])
+	for i in range(len(Female)):
+		FloorList[i]= FloorList+ roomate_list(Female[i])
 			
-# 	return final_dict 
+	return FloorList
 	
 	
 def generate_data():
 	stud_list = []
 	for x in range(0,30):
-		student = Student("anthony"+str(random.randrange(0,100)),True,random.randrange(0,10)+1, random.randrange(0,10)+1)
+		attributes = []
+		for i in range(10):
+			attributes.append(random.randrange(10))
+		student = Student("anthony"+str(random.randrange(0,100)),True,attributes)
 		stud_list.append(student)
 	for x in range(0,30):
-		student = Student("christine"+str(random.randrange(0,100)), False, random.randrange(0,10)+1, random.randrange(0,10)+1)
+		attributes = []
+		for i in range(10):
+			attributes.append(random.randrange(10))
+		student = Student("christine"+str(random.randrange(0,100)), False,attributes)
 		stud_list.append(student)
 	random.shuffle(stud_list)
 	return stud_list
-		
-
-list_of_students = generate_data()
-print (list_of_students)
-print ("***************")
-# print (sorted(list_of_students))
-x,y = separate_genders(list_of_students)
-print (x)
-print (y)
-separate_floors(x)
-print(x)
+student_list = generate_data()
+print(run(student_list))
