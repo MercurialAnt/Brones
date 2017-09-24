@@ -4,7 +4,6 @@ import random
 import heapq
 import web
 import json
-import csv
 
 urls = (
 	'/', 'get_roommates',
@@ -87,7 +86,6 @@ def find_roomate (stud_list):
 					studentA = stud_list[x]
 					studentB = stud_list[y]
 					print(studentA,studentB)
-
 	return (studentA,studentB)
 """
 def get_roommate_list (stud_list):
@@ -112,23 +110,7 @@ def get_roommate_list (stud_list):
 			paired.add(j)
 	
 	return paired_roommates
-def get_data():
-	with open('roomateSpreadsheet.csv',"rb") as f:
-		reader = csv.reader(f)
-		stud_data = list(reader)
-	stud_data.pop(0)
-	std_list = []
-	for stud in stud_data:
-		if stud[1] == 'Female': #changing gender string into boolean values
-			stud[1] = False
-		else: 
-			stud[1] = True
-		attributes = []
-		for attribute in stud[2:]:
-			attributes.append(int(attribute))
-		student = Student(stud[0],stud[1],attributes)
-		std_list.append(student)
-	return std_list	
+	
 def run(stud_list):
 	male_list, female_list = separate_genders(stud_list)
 	separate_floors(male_list)
@@ -154,7 +136,6 @@ def run(stud_list):
 	return FloorList	
 	
 # This function is only for generating dummy data
-"""
 def generate_data():
 	stud_list = []
 	NUM_OF_MALES = 28
@@ -173,9 +154,9 @@ def generate_data():
 		stud_list.append(student)
 	random.shuffle(stud_list)
 	return stud_list
-"""
 
-student_list = get.data()
+
+student_list = generate_data()
 # print("******************")
 # print(student_list)
 # males, females = separate_genders(student_list)
