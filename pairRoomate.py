@@ -2,6 +2,16 @@ import math
 import sys
 import random
 import heapq
+import web
+import json
+
+urls = (
+	'/', 'get_roommates',
+	'/names', 'get_names'
+)
+
+app = web.application(urls, globals())
+
 
 class Student: 
 	
@@ -13,8 +23,8 @@ class Student:
 		self.floor = None							# a value between 1 and 6
 	
 	def __str__(self):
-		# return self.name
-		return "(" + self.name + " : " + str(self.floor) + ")"
+		return self.name
+		# return "(" + self.name + " : " + str(self.floor) + ")"
 
 	def __repr__(self):
 		return str(self)
@@ -96,7 +106,7 @@ def get_roommate_list (stud_list):
 	for x in range(len(heap)):
 		dist,i,j = heapq.heappop(heap)
 		if not (i in paired or j in paired):
-			paired_roommates.append((stud_list[i],stud_list[j]))
+			paired_roommates.append((str(stud_list[i]),str(stud_list[j])))
 			paired.add(i)
 			paired.add(j)
 	
@@ -162,9 +172,21 @@ student_list = generate_data()
 #	
 #print len(roommates)
 
-floorList = run(student_list)
-for i in range(6):
-	print(str(i+1) + ": ")
-	for pair in floorList[i]:
-		print ("\t" + str(pair))
-	print("")
+
+# for i in range(6):
+# 	print(str(i+1) + ": ")
+# 	for pair in floorList[i]:
+# 		print ("\t" + str(pair))
+# 	print("")
+
+class get_roommates:
+	def GET(self):
+		roommates = run(student_list)
+		return json.dumps(roommates)
+
+class get_names:
+	def GET(self):
+		return json.dumps([[('Jaswin','Anthony'),('Jaswin1','Anthony1')],[('Christine','Will'),('Christine','Will')]])
+
+if __name__ == "__main__":
+    app.run()
