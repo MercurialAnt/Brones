@@ -4,6 +4,7 @@ import random
 import heapq
 import web
 import json
+import csv
 
 urls = (
 	'/', 'get_roommates',
