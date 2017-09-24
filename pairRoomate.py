@@ -181,11 +181,13 @@ student_list = generate_data()
 
 class get_roommates:
 	def GET(self):
+		web.header('Access-Control-Allow-Origin', '*')
 		roommates = run(student_list)
 		return json.dumps(roommates)
 
 class get_names:
 	def GET(self):
+		web.header('Access-Control-Allow-Origin', '*')
 		return json.dumps([[('Jaswin','Anthony'),('Jaswin1','Anthony1')],[('Christine','Will'),('Christine','Will')]])
 
 if __name__ == "__main__":

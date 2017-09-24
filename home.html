@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html ng-app="RoommateApp">
+<head>
+	<title>Jones College</title>
+  	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.5/angular.min.js"></script>
+	<script src="script.js"></script>
+</head>
+<body>
+	<div>
+		<nav>
+			<div class="nav-wrapper blue">
+				<a href="#" class="brand-logo center">Jones College</a>
+			</div>
+		</nav>
+	</div>
+	<div class="card-panel">Knock, Knock! Who's it? Jones!</div>
+	<div class="container">
+		<div ng-controller="RoommateListController as ctrl">
+			<table class="striped">
+				<tr>
+					<th>Roommate 1</th><th>Roommate 2</th>
+				</tr>
+				<tr ng-repeat="roommate in ctrl.floor4S">
+					<td>{{ roommate[0] }}</td><td>{{ roommate[1] }}</td>
+				</tr>
+				<tr ng-repeat="roommate in ctrl.floor3S">
+					<td>{{ roommate[0] }}</td><td>{{ roommate[1] }}</td>
+				</tr>
+				<tr ng-repeat="roommate in ctrl.floor2S">
+					<td>{{ roommate[0] }}</td><td>{{ roommate[1] }}</td>
+				</tr>
+				<tr ng-repeat="roommate in ctrl.floor2N">
+					<td>{{ roommate[0] }}</td><td>{{ roommate[1] }}</td>
+				</tr>
+				<tr ng-repeat="roommate in ctrl.floor4N">
+					<td>{{ roommate[0] }}</td><td>{{ roommate[1] }}</td>
+				</tr>
+				<tr ng-repeat="roommate in ctrl.floor3N">
+					<td>{{ roommate[0] }}</td><td>{{ roommate[1] }}</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+</body>
+</html>
