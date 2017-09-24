@@ -2,8 +2,10 @@ import math
 import sys
 import random
 import heapq
+import csv
 
 class Student: 
+	
 	def __init__(self, name, gender, attributes):
 		self.name = name 
 		self.gender = gender
@@ -12,8 +14,8 @@ class Student:
 		self.floor = None							# a value between 1 and 6
 	
 	def __str__(self):
-		return self.name
-#		return "(" + self.name + " : " + str(self.floor) + ")"
+		# return self.name
+		return "(" + self.name + " : " + str(self.floor) + ")"
 
 	def __repr__(self):
 		return str(self)
@@ -24,7 +26,24 @@ class Student:
 		return (self.sound > other.sound)
 	def __lt__(self,other):
 		return (self.sound < other.sound)
-
+		
+def get_data():
+	with open('roomateSpreadsheet.csv',"rb") as f:
+		reader = csv.reader(f)
+		stud_data = list(reader)
+	stud_data.pop(0)
+	std_list = []
+	for stud in stud_data:
+		if stud[1] == 'Female': #changing gender string into boolean values
+			stud[1] = False
+		else: 
+			stud[1] = True
+		attributes = []
+		for attribute in stud[2:]:
+			attributes.append(int(attribute))
+		student = Student(stud[0],stud[1],attributes)
+		std_list.append(student)
+	return std_list
 
 # we are assuming that gender is a boolean
 def separate_genders(student_list):
@@ -39,17 +58,19 @@ def separate_genders(student_list):
 	return male_list, female_list
 
 """
-	Floor 0 = 4S
-	Floor 1 = 3S
-	Floor 2 = 2S
-	Floor 3 = 2N
-	Floor 4 = 3N
-	Floor 5 = 4N
+	Floor 1 = 4S
+	Floor 2 = 3S
+	Floor 3  = 2S
+	Floor 4 = 2N
+	Floor 5 = 3N
+	Floor 6 = 4N
 """
 
 def separate_floors(stud_list):
 	sorted(stud_list)
-	part = len(stud_list)/6
+	part = math.ceil( (len(stud_list)/6.0) )
+	if part % 2:
+		part += 1
 	for x in range(len(stud_list)):
 		stud_list[x].floor = int(x//part) + 1
 
@@ -73,10 +94,9 @@ def find_roomate (stud_list):
 					studentA = stud_list[x]
 					studentB = stud_list[y]
 					print(studentA,studentB)
-
 	return (studentA,studentB)
 """
-def find_roommate (stud_list):
+def get_roommate_list (stud_list):
 	size = len(stud_list)
 	Stud_Matrix = [[sys.maxsize for x in range(size)] for y in range(size)]
 	heap = []
@@ -98,26 +118,12 @@ def find_roommate (stud_list):
 			paired.add(j)
 	
 	return paired_roommates
-			
-	
-	
-	
-#def roomate_list(stud_list):
-#	my_roomate_list = []
-#	while 0 < len(stud_list):
-#		roomate = find_roomate(stud_list)
-#		print(roomate)
-#		stud_list.remove(roomate[0])
-#		stud_list.remove(roomate[1])
-#		my_roomate_list.append(roomate)
-#	
-#	return my_roomate_list
 	
 def run(stud_list):
 	male_list, female_list = separate_genders(stud_list)
 	separate_floors(male_list)
 	separate_floors(female_list)
-	print(male_list,female_list)
+	# print(male_list,female_list)
 	Male =[[] for _ in range(6)]
 	Female = [[] for _ in range(6)]
 	
@@ -125,53 +131,42 @@ def run(stud_list):
 		Male[student.floor-1].append(student)
 	for student in female_list:
 		Female[student.floor-1].append(student)
-	print("***************")
-	print(Male)
-	print(Female) 
-	print("***************")
+	# print("***************")
+	# print(Male)
+	# print(Female) 
+	# print("***************")
 	FloorList=[[] for _ in range(6)]
 	for i in range(6):
-		FloorList[i] = find_roommate(Male[i])
+		FloorList[i] = get_roommate_list(Male[i])
 	for i in range(6):
-		FloorList[i] += find_roommate(Female[i])
+		FloorList[i] += get_roommate_list(Female[i])
 			
 	return FloorList	
 	
-def generate_data():
-	stud_list = []
-	for x in range(0,36):
-		attributes = []
-		for i in range(10):
-			attributes.append(random.randrange(10))
-		student = Student("anthony"+str(x),True,attributes)
-		stud_list.append(student)
-	for x in range(0,30):
-		attributes = []
-		for i in range(10):
-			attributes.append(random.randrange(10))
-		student = Student("christine"+str(x), False,attributes)
-		stud_list.append(student)
-	random.shuffle(stud_list)
-	return stud_list
+# This function is only for generating dummy data
 
 
-student_list = generate_data()
-#print(student_list)
-#males, females = separate_genders(student_list)
-#separate_floors(males)
-#print("******************")
-#print(males)
+
+# print("******************")
+# print(student_list)
+# males, females = separate_genders(student_list)
+# separate_floors(males)
+# print("******************")
+# print(males)
 #
-#roommates = find_roommate(males)
-#print("******************")
+#roommates = get_roommate_list(males)
+# print("******************")
 #for roommate in roommates:
 #	print(roommate)
 #	
 #print len(roommates)
 
+student_list = get_data()
 floorList = run(student_list)
 for i in range(6):
 	print(str(i+1) + ": ")
 	for pair in floorList[i]:
 		print ("\t" + str(pair))
 	print("")
+
+
