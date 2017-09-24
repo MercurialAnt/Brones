@@ -4,6 +4,8 @@ import random
 import heapq
 import web
 import json
+import csv
+
 
 urls = (
 	'/', 'get_roommates',
@@ -155,8 +157,25 @@ def generate_data():
 	random.shuffle(stud_list)
 	return stud_list
 
+def get_data():
+	with open('roomateSpreadsheet.csv',"rb") as f:
+		reader = csv.reader(f)
+		stud_data = list(reader)
+	stud_data.pop(0)
+	std_list = []
+	for stud in stud_data:
+		if stud[1] == 'Female': #changing gender string into boolean values
+			stud[1] = False
+		else: 
+			stud[1] = True
+		attributes = []
+		for attribute in stud[2:]:
+			attributes.append(int(attribute))
+		student = Student(stud[0],stud[1],attributes)
+		std_list.append(student)
+	return std_list
 
-student_list = generate_data()
+student_list = get_data()
 # print("******************")
 # print(student_list)
 # males, females = separate_genders(student_list)
